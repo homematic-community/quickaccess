@@ -1,0 +1,25 @@
+#!/bin/sh
+
+myname=qa
+mylongname=quickaccess
+wwwdir=/mnt/etc/config/addons/www/$myname
+rcddir=/mnt/etc/config/rc.d
+
+mkdir -p /mnt
+
+if ["$1" == ""]; then
+    echo "CCU1"
+    mount -t yaffs /dev/mtdblock3 /mnt
+else
+    echo "CCU2"
+    mount -t ubifs ubi1:user /mnt
+fi
+
+mkdir -p $wwwdir
+cp -R $myname/* $wwwdir
+chmod 775 $wwwdir
+
+cp $mylongname $rcddir/$mylongname
+chmod +x $rcddir/$mylongname
+
+umount /mnt

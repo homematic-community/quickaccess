@@ -1,0 +1,25 @@
+#!/bin/sh
+
+case "$1" in
+
+	""|start|restart|stop)
+		exit 0
+		;;
+
+	info)
+        echo "Info: <div style=\"float:left;\"><a href=\"http://www.christian-luetgens.de/homematic/quickaccess/QuickAccess.htm\" target=\"_blank\"><img src="../addons/qa/yellow_teddybear_white.png" width="54" height="50"></a></div><div style=\"float:right;\"><b>WebUI QuickAccess</b><br>Copyright 2010-2014<br>by Yellow Teddybear Software<br>licensed under GNU/GPL</div><div style=\"clear:both;\"></div>"
+        echo "Name: QuickAccess"
+        echo "Version: 2.0b5"
+        echo "Operations: uninstall"
+        ;;
+	uninstall)
+		rm -r /usr/local/etc/config/addons/www/qa
+		;;
+	*)
+        echo "Usage: quickaccess {info|uninstall}" >&2
+        exit 1
+        ;; 
+
+esac 
+
+exit 0

@@ -1,0 +1,203 @@
+
+body {
+	background-color:black;
+	color:white;
+	font-family:Arial,Sans-serif;
+	padding:0;
+	margin:10px;
+}
+
+
+table, tr, td, th {
+	clear:both;
+	padding:0;
+	margin:0;
+	text-align:left;
+	font-weight:normal;
+	border:0 solid white;
+	background-color:#aaaaaa; 
+	color:#000000;
+}
+
+table {
+	border-spacing:0;
+	border-collapse:collapse;
+}
+
+a { 
+	text-decoration:none;
+	color:white;
+}
+
+p a {
+	font-weight:bold;
+	color:#33ff33;
+}
+
+/* Standardbutton: grau  */
+
+div { 
+	font-weight:normal; 
+	background-color:#aaaaaa; 
+	color:#000000;
+	border-color:#aaaaaa;
+	text-decoration:none; 
+	overflow:hidden; 
+	float:left;
+	border-style:solid;
+	text-align:center;
+}
+
+/* Buttons: schwarz=anklickbar, weiß=aktiv/nicht anklickbar */
+
+div.buttonfalse, div.button {
+	background-color:#000000;
+	color:#ffffff;
+	border-color:#ffffff;
+}
+
+div.buttontrue {
+	background-color:#ffffff;
+	color:#000000;
+	border-color:#ffffff
+}
+
+/* Hilfe: grün */
+
+div.buttonhelp {
+	background-color:#003300;
+	color:#33ff33;
+	border-color:#33ff33
+}
+
+/* Alarmmeldungen: rot=Fehler/true */
+
+
+div.errortrue, div.error, div.error1, div.error2, div.error3, div.error4, div.error5, div.error6, div.error7 {
+	background-color:#440000;
+	color:#ff3333;
+	border-color:#ff3333;
+	font-weight:bold;
+}
+
+
+/* Warnmeldungen: gelb=es ist etwas passiert */
+
+div.warningtrue, div.warning1, div.warning2, div.warning3, div.warning4, div.warning5 {
+	background-color:#444400;
+	color:#ffff66;
+	border-color:#ffff66;
+}
+
+
+/* Statusmeldungen: cyan=es ist etwas passiert, unsichtbar=nix */
+
+div.statustrue, div.status1 {
+	background-color:#005566;
+	color:#66aaff;
+	border-color:#66aaff;
+}
+
+/* unsichtbare Buttons */
+
+div.statusfalse, div.status0, div.errorfalse, div.error0, div.warningfalse, div.warning0 {
+ 	display:none;
+} 
+
+
+/* Erfolgsmeldung: grün */
+
+div.success {
+	background-color:#004400;
+	color:#33ff33;
+	border-color:#33ff33;
+}
+
+h1, h3, h5, p {
+	clear:both;
+	overflow:hidden;
+}
+
+h1.maintitle {
+	float:left;
+}
+
+
+pre {
+	color:white;
+	clear:both;
+}
+
+div.active {
+	background-color:#ffff00;
+	border-color:#ffff00;
+	color:#000000;
+}
+
+div.activeinput {
+	background-color:#ffff00;
+	border-color:#ffff00;
+	color:#000000;
+}
+
+/* Dummy für Internet Explorer .... */
+
+span {
+	background-image:none;
+}
+
+span.gray {
+	color:#aaaaaa;
+}
+
+span.left { 
+	float:left; 
+	text-align:left; 
+}
+
+span.right {
+	float:right; 
+	text-align:right;
+}
+
+input {
+	background-color:#000000;
+	color:#aaaaff;
+	font-family:Arial,Sans-serif;
+	font-weight:normal;
+	border:none;
+	margin:0;
+	padding:0;
+}
+
+div.inputfield, div.smallinputfield, div.inputbutton {
+	float:left;
+	background-color:black;
+	color:#aaaaff;
+	font-family:Arial,Sans-serif;
+	font-weight:normal;
+	border:1px solid #aaaaff;
+	overflow:hidden;
+}
+
+div.inputlabel {
+	clear:both;
+	background-color:#aaaaff;
+	color:#0000cc;
+	border:1px solid #aaaaff;
+}
+
+
+p.newline {
+	clear:both;
+	line-height:0;
+	height:0;
+	padding:0;
+	margin:0;
+}
+
+form {
+	margin:0;
+	padding:0;
+}
+

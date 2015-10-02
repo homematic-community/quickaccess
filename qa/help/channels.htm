@@ -1,0 +1,39 @@
+<html>
+	<head>
+	
+		<title>QuickAccess-Hilfe</title>
+		<link href="../style.css" rel="stylesheet" type="text/css">
+		<meta name="viewport" content="width=320, initial-scale=1" />
+	</head>
+	<body>
+		<script src="../style.js" type="text/javascript"></script>
+		<h1>QuickAccess Hilfe</h1>
+		
+		<a href="javascript:jumpto('../index.cgi');"><div class="button">Startseite</div></a>
+		<a href="javascript:history.back();"><div class="button">zurück</div></a>
+		
+		<h3>Kanalliste</h3>
+		
+		<p>In der Kanalliste werden alle Kanäle angezeigt, die der entsprechenden Auswahl
+		zugeordnet sind. Beispiel: Wenn auf der <a 
+		href="javascript:jumpto('index.htm');">Startseite</a> im Bereich "Räume" der Raum
+		"Arbeitszimmer" angeklickt wird, dann werden in der Kanalliste alle Kanäle 
+		angezeigt, die zum Arbeitszimmer gehören. Die Auswahl wird in der WebUI vorgenommen, 
+		indem die Kanäle den entsprechenden Räumen und Gewerken hinzugefügt werden.</p>
+		<p>Bei der Anzeige der Namen wird die aktuell ausgewählte Liste herausgelöscht, um 
+		die Anzeige auf schmalen Displays zu verbessern. Beispiel: Wenn der Raum 
+		"Arbeitszimmer" angezeigt wird, und ein Kanal heißt "Arbeitszimmer Stehlampe
+		links", dann wird "- Stehlampe links" angezeigt.</p>
+		<p>Die Anzeige stellt den aktuellen Zustand dar, wird aber nicht automatisch 
+		aktualisiert. Wenn z.B. ein Programm das Licht einschaltet, bleibt es in
+		QuickAccess "aus", bis die Seite aktualisiert oder auf anderem Wege neu 
+		aufgerufen wird.</p>
+		
+		<h3>Geräteliste</h3>
+		
+		<p>Bei der Anzeige von Geräten (über Startseite &gt; Geräte) erfolgt die Auswahl
+		automatisch anhand der Typpezeichnung des Gerätes. Aus technischen Gründen ist
+		hier die Reaktion der CCU etwas träger als bei Räumen und Gewerken.</p>
+		
+	</body>
+</html>

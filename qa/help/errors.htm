@@ -1,0 +1,50 @@
+<html>
+	<head>
+	
+		<title>QuickAccess-Hilfe</title>
+		<link href="../style.css" rel="stylesheet" type="text/css">
+		<meta name="viewport" content="width=320, initial-scale=1" />
+	</head>
+	<body>
+		<script src="../style.js" type="text/javascript"></script>
+		<h1>QuickAccess Hilfe</h1>
+		
+		<a href="javascript:jumpto('../index.cgi');"><div class="button">Startseite</div></a>
+		<a href="javascript:history.back();"><div class="button">zurück</div></a>
+		
+		<h3>Service&shy;meldungen</h3>
+		
+		<p>In der Liste der Servicemeldungen werden alle Geräte angezeigt, für die
+		aktuell Servicemeldungen bestehen. Die Liste wird im Hintergrund aktualisiert, 
+		wenn die <a href="javascript:jumpto('index.htm');">Startseite</a> oder die 
+		Servicemeldungen aufgerufen werden. Wenn die Aktualisierung abgeschlossen ist, 
+		wird im Infobutton die Anzahl der Meldungen für die wichtigsten Kategorien 
+		zusammengefaßt.</p>
+		
+		<p>Servicemeldungen werden höchstens einmal pro Minute aktualisiert, um die 
+		CCU nicht zu überlasten. Wenn keine Aktualisierung durchgeführt wird, werden
+		die Werte der letzten Zählung für die Zusammenfassung verwendet.</p>
+		
+		<p>In der <a href="javascript:jumpto('channels.htm')">Kanalliste</a> werden
+		Servicemeldungen ebenfalls angezeigt. Die Meldungen erscheinen zusätzlich
+		zu den normalen Bedienelementen bei jedem einzelnen Kanal.</p>
+		
+		<p>Die Auflistung unter "Servicemeldungen" erfolgt anhand der Geräte, die
+		Auflistung in den Kanallisten anhand der Kanäle. Beispiel: Wenn ein 
+		Raumthermostat eine Batteriewarnung liefert, erscheint die Warnung in den 
+		"Servicemeldungen" nur einmal für das Gerät, in der Kanalliste zweimal für 
+		die beiden sichtbaren Kanäle.</p>
+		
+		<p>Unter den "Servicemeldungen" können einzelne Meldungen auch ausgeblendet
+		werden, um die Übersicht zu verbessern. Über den Button "alle Meldungen
+		anzeigen" können die ausgeblendeten Buttons wieder angezeigt werden. Für die 
+		Zählung in der Übersicht werden grundsätzlich immer nur die eingeblendeten
+		Meldungen gezählt; die Aktualisierung der Werte erfolgt aber wie oben beschrieben
+		nur einmal pro Minute.</p>
+		
+		<p>Die Servicemeldungen werden in der Systemvariable "QuickAccess 
+		Servicemeldungen" zwischengespeichert. Die Variable wird automatisch angelegt,
+		wenn QuickAccess aufgerufen wird.</p>
+
+	</body>
+</html>
