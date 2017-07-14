@@ -9,7 +9,7 @@ case "$1" in
 	info)
         echo "Info: <div style=\"float:left;\"><a href=\"http://www.christian-luetgens.de/homematic/quickaccess/QuickAccess.htm\" target=\"_blank\"><img src="../addons/qa/backgrounds/yellow_teddybear_white.png" width="54" height="50"></a></div><div style=\"float:right;\"><b>WebUI QuickAccess</b><br>Copyright 2010-2015<br>by Yellow Teddybear Software<br>licensed under GNU/GPL</div><div style=\"clear:both;\"></div>"
         echo "Name: QuickAccess"
-        echo "Version: 2.1b1"
+        echo "Version: 2.1b2"
         echo "Operations: uninstall"
         ;;
 	uninstall)

@@ -4,6 +4,6 @@ cp -a qa/* tmp/qa
 cp update_script tmp/
 cp quickaccess tmp/
 cd tmp
-tar -czvf ../quickaccess-2.0b6.tar.gz *
+tar --owner=root --group=root --exclude=.DS_Store -czvf ../quickaccess-2.1b2.tar.gz *
 cd ..
 rm -rf tmp
