@@ -16,14 +16,26 @@ cgi_eval {
     cgi_html {
 
 		cgi_head {
-    		cgi_title "HomeMatic QuickAccess"
+    		cgi_title "Inventur - HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 			puts {<h1>Inventur</h1>}
 			
 			set pin ""
@@ -41,9 +53,9 @@ cgi_eval {
 					WriteLine ('<script language="JavaScript">jumpto(\'password.cgi\');</script>');
 				} else {
 
-					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 					if (s_sys_pin != "") {
-						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="button">abmelden</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="standard button">abmelden</div></a>');
 					}
 
 					string s_device;
@@ -144,7 +156,7 @@ cgi_eval {
 	
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010,2011 by Yellow Teddybear Software</p> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
 
 		}

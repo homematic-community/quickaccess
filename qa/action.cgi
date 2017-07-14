@@ -19,12 +19,24 @@ cgi_eval {
 		cgi_head {
     		cgi_title "HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 
 			set id ""
 			set action ""
@@ -52,11 +64,11 @@ cgi_eval {
 					WriteLine ('<h1>Aktivität</h1>');
 
 
-					Write ('<h3>');
+					Write ('<div class="clear"></div><h3>');
 					WriteXML (o_object.Name())
 					WriteLine ('</h3>');
 
-					WriteLine ('<span class="multi_2"><div>Aktion<br>' # s_action # '</div></span>');
+					WriteLine ('<span class="multi_2"><div class="standard">Aktion<br>' # s_action # '</div></span>');
 
 					o_object.State(s_action);
 
@@ -68,9 +80,8 @@ cgi_eval {
 	
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010-2014 by Yellow Teddybear Software</p> }
-
-
+			puts { </div> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
 		}
 

@@ -16,14 +16,26 @@ cgi_eval {
     cgi_html {
 
 		cgi_head {
-    		cgi_title "HomeMatic QuickAccess"
+    		cgi_title "Reboot - HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 			puts {<h1>Neustart</h1>}
 			
 			set pin ""
@@ -44,9 +56,9 @@ cgi_eval {
 					WriteLine ('<script language="JavaScript">jumpto(\'password.cgi\');</script>');
 				} else {
 
-					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 					if (s_sys_pin != "") {
-						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="button">abmelden</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="standard button">abmelden</div></a>');
 					}
 
 					string stdout = "";
@@ -56,9 +68,9 @@ cgi_eval {
 						system.Exec ('/usr/bin/uptime', &stdout, &stderr);
 						WriteLine ('<p>' # stdout # '</p>');
 						WriteLine ('<p>Beim Reboot wird die Konfiguration gespeichert und die Zentrale anschließend neu gestartet.</p>');
-						WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=Reboot\');"><div onclick="this.className=\'active\';" class="button">Reboot</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=Reboot\');"><div onclick="this.className=\'standard active\';" class="standard button">Reboot</div></a>');
 						WriteLine ('<p>Beim Reset wird die Zentrale neu gestartet, ohne die Konfiguration zu sichern.</p>');
-						WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=Reset\');"><div onclick="this.className=\'active\';" class="button">Reset</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=Reset\');"><div onclick="this.className=\'standard active\';" class="standard button">Reset</div></a>');
 					} else {
 
 						if ((s_action == "Reboot") || (s_action == "Reset")) {
@@ -87,7 +99,7 @@ cgi_eval {
 								WriteLine ('ohne die Konfiguration vorher zu sichern.</p>');
 							}
 							
-							WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=' # s_action # '_ok\');"><span class="multi_2"><div onclick="this.className=\'active\';" class="button">' # s_action # '<br>ausführen</div></span></a>');
+							WriteLine ('<a href="javascript:jumpto(\'tools_reboot.cgi?action=' # s_action # '_ok\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard button">' # s_action # '<br>ausführen</div></span></a>');
 				
 							WriteLine ('<p>Wenn Sie auf "' # s_action # ' ausführen" klicken, kann der Vorgang nicht abgebrochen werden!</p>');
 
@@ -113,7 +125,7 @@ cgi_eval {
 	
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010,2011 by Yellow Teddybear Software</p> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
 
 		}

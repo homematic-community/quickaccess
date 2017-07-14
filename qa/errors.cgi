@@ -16,12 +16,24 @@ cgi_eval {
 		cgi_head {
     		cgi_title "HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css" /> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 
 			set pin ""
 			catch { import pin }
@@ -31,6 +43,8 @@ cgi_eval {
 			catch { import confirm }
 			set list ""
 			catch { import list }
+			set tablet ""
+			catch { import tablet }
 
 			array set res [rega_script {
 
@@ -39,6 +53,7 @@ cgi_eval {
 				string s_id = "} $id {";
 				boolean b_all = "} $list {"=="all";
 				boolean b_confirm = "} $confirm {"=="true";
+				boolean tablet = ("} $tablet {"=="1");				
 				
 				string s_sys_pin = "";
 				object o_sys_pin = dom.GetObject ("QuickAccess PIN");
@@ -78,15 +93,17 @@ cgi_eval {
 						o_confirmed.State (s_confirmed);
 					}
 					WriteLine ("<h1>Service&shy;meldungen</h1>");
-					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'index.cgi#\' + js_ianchor);"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 					if (s_sys_pin != "") {
-						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div onclick="this.className=\'active\';" class="button">abmelden</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div onclick="this.className=\'standard active\';" class="standard button">abmelden</div></a>');
 					}
-					WriteLine ('<span class="multi_4"><div><span id="errors_count">offene<br>Meldungen<br>werden<br>gesucht</span></div></span>');
-					WriteLine ('<a href="javascript:jumpto(\'errors.cgi?list=' # ("all:errors".StrValueByIndex (":", b_all)) # '\');"><span class="multi_3"><div onclick="this.className=\'active\';" class="button' # b_all # '">' # ('alle:nur offene'.StrValueByIndex (':', b_all)) # '<br>Meldungen<br>anzeigen</div></span></a>');
+					WriteLine ('<span class="multi_4"><div class="standard"><span id="errors_count">offene<br>Meldungen<br>werden<br>gesucht</span></div></span>');
+					WriteLine ('<a href="javascript:jumpto(\'errors.cgi?list=' # ("all:errors".StrValueByIndex (":", b_all)) # '\');"><span class="multi_3"><div onclick="this.className=\'standard active\';" class="standard button' # b_all # '">' # ('alle:nur offene'.StrValueByIndex (':', b_all)) # '<br>Meldungen<br>anzeigen</div></span></a>');
 						
-					WriteLine ('<a href="javascript:jumpto(\'help/errors.htm\');"><div class="buttonhelp">Hilfe</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'help/errors.htm\');"><div class="standard buttonhelp">Hilfe</div></a>');
 					WriteLine ("");
+
+					if (tablet) { WriteLine ('<div class="clear"></div><table class="tablet">'); }
 
 					foreach (s_dp, dom.GetObject("QuickAccess Servicemeldungen").Value()) {
 						o_object = dom.GetObject (s_dp.StrValueByIndex (":", 0));
@@ -101,7 +118,7 @@ cgi_eval {
 								WriteLine ('<!-- ' # s_dp # ' / ' # o_dp.Name() # ' / ' # o_dp.Value() # ' / ' # o_dp.HssType() # ' / ' # o_dp.TypeName() # ' -->');
 								
 								if ((o_dp.TypeName() == "ALARMDP") && (o_dp.Value())) {
-									s_button_type = "warning";
+									s_button_type = "standard warning";
 									s_dp = o_dp.Name().StrValueByIndex(".", 1);
 									if (s_dp == "CONFIG_PENDING") {
 										s_button_labels = ".:Konfigur.-<br>daten<br>übertragen";
@@ -113,7 +130,7 @@ cgi_eval {
 										s_button_labels = ".:Kommunik.<br>war<br>gestört";
 									}
 									if (s_dp == "UNREACH") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = ".:Kommunik.<br>zur Zeit<br>gestört";
 									}
 								}
@@ -130,48 +147,48 @@ cgi_eval {
 									! WINMATIC
 									if (o_dp.HssType() == "ERROR") {
 										if (o_object.HssType() == "CLIMATECONTROL_VENT_DRIVE") {
-											s_button_type = 'error';
+											s_button_type = 'standard error';
 											s_button_labels = 'kein<br>Fehler:Ventil<br>blockiert:Ventil<br>falsch<br>montiert:Stellbereich<br>zu klein:Batterie<br>leer<br>Störpos.<br>angefahren';
 										}
 										if ((";MOTION_DETECTOR;ROTARY_HANDLE_SENSOR;SHUTTER_CONTACT;".Find(";" # o_object.HssType() # ";")) != -1) {
-											s_button_type = 'error';
+											s_button_type = 'standard error';
 											s_button_labels = 'keine<br>Sabotage:.:.:.:.:.:.:Sabotage';
 										}
 										if (o_object.HssType() == "DIMMER") {
-											s_button_type = 'error';
+											s_button_type = 'standard error';
 											s_button_labels = 'kein<br>Lastfehler:.:.:Lastfehler';
 										}
 										if (o_object.HssType() == "WINMATIC") {
-											s_button_type = 'error';
+											s_button_type = 'standard error';
 											s_button_labels = 'Antrieb<br>OK:Fehler<br>Drehgriff:Fehler<br>Kippantrieb';
 										}
 										if (o_object.HssType() == "KEYMATIC") {
-											s_button_type = 'error';
+											s_button_type = 'standard error';
 											s_button_labels = 'Antrieb<br>OK:Fehler<br>einkuppeln:Abbruch<br>Motorlauf';
 										}
 									} ! ERROR
 
 									! DIMMER
 									if (o_dp.HssType() == "ERROR_OVERHEAT") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = 'Temperatur<br>OK;Überhitzung';
 									} ! ERROR_OVERHEAT
 
 									! DIMMER
 									if (o_dp.HssType() == "ERROR_OVERLOAD") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = 'keine<br>Überlast;Überlast';
 									} ! ERROR_OVERLOAD
 									
 									! DIMMER
 									if (o_dp.HssType() == "ERROR_REDUCED") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = 'Last hoch<br>genug;Last zu<br>gering';
 									} ! ERROR_REDUCED
 
 									! POWER
 									if (o_dp.HssType() == "LOWBAT") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = 'Batterie<br>OK:Batterie<br>leer';
 									}
 									
@@ -181,21 +198,21 @@ cgi_eval {
 									if (o_dp.HssType() == "STATE") {
 										if (o_object.HssType() == "WATERDETECTIONSENSOR") {
 											if (o_dp.Value() < 2) {
-												s_button_type = "warning";
+												s_button_type = "standard warning";
 											} else {
-												s_button_type = "error";
+												s_button_type = "standard error";
 											}
 											s_button_labels = "trocken:feucht:nass";
 										}
 										if (o_object.HssType() == "SMOKE_DETECTOR_TEAM") {
-											s_button_type = "error";
+											s_button_type = "standard error";
 											s_button_labels = "kein<br>Rauch:Alarm";
 										}
 										if (o_object.HssType() == "SENSOR_FOR_CARBON_DIOXIDE") {
 											if (o_dp.Value() < 2) {
-												s_button_type = "warning";
+												s_button_type = "standard warning";
 											} else {
-												s_button_type = "error";
+												s_button_type = "standard error";
 											}
 											s_button_labels = "Belastung<br>OK:Belastung<br>erhöht:Belastung<br>stark<br>erhöht";
 										}
@@ -203,7 +220,7 @@ cgi_eval {
 
 									! POWER
 									if (o_dp.HssType() == "U_SOURCE_FAIL") {
-										s_button_type = "error";
+										s_button_type = "standard error";
 										s_button_labels = 'Betrieb<br>über<br>Netz-<br>spannung:Batterie-<br>betrieb';
 									} ! U_SOURCE_FAIL
 
@@ -217,27 +234,33 @@ cgi_eval {
 										i_temp = i_temp + 1;
 									}
 									WriteLine ('');
-									Write ('<a name="' # o_dp.ID() # '"><h3>');
+									if (tablet) { WriteLine ('<tr><th>'); }
+									Write ('<a name="' # o_dp.ID() # '"></a><h3><table class="blind"><td class="wide">');
 									WriteXML (o_object.Name());
-									WriteLine ('</h3></a>');
+									WriteLine ('</td><td><div class="toparrow" onclick="jumptotop();"></div></td></table></h3>');
+									if (tablet) { WriteLine ('</th><td>'); }
 									b_visible = (s_confirmed.Find (':' # o_dp.ID() # ':') >= 0);
-									WriteLine ('<a href="javascript:jumpto(\'errors.cgi?id=' # o_dp.ID() # '&confirm=' # (!b_visible) # '#' # s_anchor # '\');"><div onclick="this.className=\'active\';" class="button' # b_visible # '">' # ("ausblenden:einblenden".StrValueByIndex (":", b_visible)) # '</div></a>');
+									WriteLine ('<a href="javascript:jumpto(\'errors.cgi?id=' # o_dp.ID() # '&confirm=' # (!b_visible) # '#' # s_anchor # '\');"><div onclick="this.className=\'standard active\';" class="standard button' # b_visible # '">' # ("ausblenden:einblenden".StrValueByIndex (":", b_visible)) # '</div></a>');
 									WriteLine ('<span class="multi_' # i_temp # '"><div class="' # s_button_type # o_dp.Value() # '">' # s_button_label # '</div></span>');
 									s_anchor = o_dp.ID();
+									if (tablet) { WriteLine ('</td></tr>'); }
 								}
 							}
 						}
 					}	
-		
+
+					if (tablet) { WriteLine ('<div class="clear"></div><table class="tablet">'); }
+
 				}
 				
 			}]
 	
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010-2014 by Yellow Teddybear Software</p> }
+			puts { </div> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
-			puts { <script src="errors-js.cgi" type="text/javascript"></script> }
+			put { <script src="errors-js.cgi" type="text/javascript"></script> }
 
 		}
     }

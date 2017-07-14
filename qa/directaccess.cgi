@@ -16,14 +16,26 @@ cgi_eval {
     cgi_html {
 
 		cgi_head {
-    		cgi_title "HomeMatic QuickAccess"
+    		cgi_title "DirectAccess - HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 
 			set id ""
 			set newvalue ""
@@ -31,13 +43,15 @@ cgi_eval {
 			catch { import newvalue }
 			set pin ""
 			catch { import pin }
+			set tablet ""
+			catch { import tablet }
 	
 			array set res [rega_script {
 
 				! PARAMETER
 				integer i_id = "} $id {".ToInteger();
 				string s_newvalue = "} $newvalue {";
-
+				boolean tablet = ("} $tablet {"=="1");
 			
 				string s_sys_pin = "";
 				object o_sys_pin = dom.GetObject ("QuickAccess PIN");
@@ -73,31 +87,35 @@ cgi_eval {
 					string s_list_enum = "";
 
 					WriteLine ('<h1>DirectAccess</h1>');
-					WriteLine ('<a href="javascript:jumpto(\'index.cgi#0\');"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'index.cgi#0\');"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 					if (s_sys_pin != "") {
-						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="button">abmelden</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="standard button">abmelden</div></a>');
 					}
-					WriteLine ('<span class="multi_4"><div><span id="errors_count">offene<br>Meldungen<br>werden<br>gesucht</span></div></span>');
-					WriteLine ('<a href="javascript:jumpto(\'help/directaccess.htm\');"><div class="buttonhelp">Hilfe</div></a>');
+					WriteLine ('<span class="multi_4"><div class="standard"><span id="errors_count">offene<br>Meldungen<br>werden<br>gesucht</span></div></span>');
+					WriteLine ('<a href="javascript:jumpto(\'help/directaccess.htm\');"><div class="standard buttonhelp">Hilfe</div></a>');
 
 					if ((i_id != 0) && (s_newvalue != '')) {
 						o_object = dom.GetObject (i_id);
 						if (o_object) {
 							if (o_object.IsTypeOf (OT_VARDP)) {
-								WriteLine ('<span class="multi_2"><div>Wert<br>setzen</div></span>');
+								WriteLine ('<span class="multi_2"><div class="standard">Wert<br>setzen</div></span>');
 								o_object.State(s_newvalue);
 							} else {
-								WriteLine ('<span class="multi_2"><div>Programm<br>starten</div></span>');
+								WriteLine ('<span class="multi_2"><div class="standard">Programm<br>starten</div></span>');
 								o_object.ProgramExecute();
 							}
 						}
 					}
 
+					if (tablet) { WriteLine ('<div class="clear"></div><table class="tablet">'); }
+
 					o_object = dom.GetObject ('QuickAccess DirectAccess');
 					if (o_object) {
 						s_programs = o_object.Value();
 						if (s_programs != ':') {
-							WriteLine ('<h3>Programme</h3>');
+							if (tablet) { WriteLine ('<tr><th>'); }
+							WriteLine ('<div class="clear"></div><h3><table class="blind"><td class="wide">Programme</td><td><div class="toparrow" onclick="jumptotop();"></div></td></table></h3>');
+							if (tablet) { WriteLine ('</th><td>'); }
 							foreach (s_idx, s_programs.Split(':')) {
 								o_program = dom.GetObject (s_idx);
 								if (o_program) {
@@ -125,11 +143,14 @@ cgi_eval {
 						if ((s_labels != ";;;;;;;;;;") && (s_values != ";;;;;;;;;;")) {
 
 							if (!o_object.IsTypeOf (786433)) {
-								Write ('<h3><a name="' # o_object.ID() # '">');
+								if (tablet) { WriteLine ('<tr><th>'); }
+								Write ('<div class="clear"></div><a name="' # o_object.ID() # '"></a><h3><table class="blind"><td class="wide">');
 								WriteXML (s_idx);
-								WriteLine ('</a></h3>');
+								WriteLine ('</td><td><div class="toparrow" onclick="jumptotop();"></div></td></table></h3>');
+								if (tablet) { WriteLine ('</th><td>'); }
 							}
 							
+
 							i_temp = 0;
 							while (i_temp < 10) {
 								s_label = s_labels.StrValueByIndex (";", i_temp);
@@ -169,7 +190,7 @@ cgi_eval {
 
 									Write ('<a href="javascript:jumpto(\'directaccess.cgi?id=' # o_object.ID() # '&newvalue=' # s_value # '#' # o_object.ID() # '\');">');
 									Write ('<span class="multi_' # i_count # '">');
-									Write ('<div onclick="this.className=\'active\';" class="button' # b_temp # '">');
+									Write ('<div onclick="this.className=\'standard active\';" class="standard button' # b_temp # '">');
 							
 									i_pointer = 0;
 									while (i_pointer < i_count) {
@@ -186,8 +207,11 @@ cgi_eval {
 								i_temp = i_temp + 1;
 							}
 							WriteLine ('');
+							if (!o_object.IsTypeOf (786433) && tablet) { WriteLine ('</td></tr>'); }
 						}
 					}
+
+					if (tablet) { WriteLine ('</table>'); }
 
 				}
 					
@@ -195,9 +219,10 @@ cgi_eval {
 
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010-2014 by Yellow Teddybear Software</p> }
+			puts { </div> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
-			puts { <script src="errors-js.cgi" type="text/javascript"></script> }
+			puts { <script async src="errors-js.cgi" type="text/javascript"></script> }
 
 		}
 

@@ -3,15 +3,17 @@
 	
 		<title>QuickAccess-Hilfe</title>
 		<link href="../style.css" rel="stylesheet" type="text/css">
-		<meta name="viewport" content="width=320, initial-scale=1" />
+		<meta name="viewport" content="width=960, initial-zoom=1"  />
+		<meta name="format-detection" content="telephone=no" />
 	</head>
-	<body>
+	<body class="help">
+		<div class="helpbackground"></div>
 		<script src="../style.js" type="text/javascript"></script>
+
 		<h1 class="maintitle">QuickAccess Hilfe</h1>
-		<img src="../yellow_teddybear.png" alt="Yellow Teddybear Software" class="titleimage">
 		<p class="newline"></p>
 		
-		<a href="javascript:jumpto('../index.cgi');"><div class="button">Startseite</div></a>
+		<a href="javascript:jumpto('../index.cgi');"><div class="standard button">Startseite</div></a>
 		
 		<h3>Räume, Gewerke</h3>
 		<p>Die Icons verzweigen in die <a 
@@ -35,23 +37,45 @@
 		aktualisiert und dann zusammengefaßt angezeigt.</p>
 
 		<h3>Einstellungen</h3>
-		<p>Über die Symbole in der ersten Reihe kann die Anzahl der Spalten eingestellt
-		werden, die angezeigt werden sollen. Die Größe der Symbole wird automatisch
-		angepaßt, so daß immer die gewählte Spaltenanzahl dargestellt werden kann.</p>
+		<p>Alle Einstellungen werden in der URL gespeichert. Wird diese URL in den Favoriten
+		gespeichert, so startet QuickAccess direkt mit den gewählten Einstellungen. Jede Seite
+		kann als Favorit gespeichert werden.</p>
+
+		<p>&quot;Buttons kleiner&quot; bzw. &quot;Buttons größer&quot;: Mit diesen Buttons kann
+		die Darstellungsgröße gewählt werden, um QuickAccess für verschiedene
+		Bildschirmgrößen anzupassen.</p>
+
 		<p>Link für Lesezeichen: Dieser Link enthält die QuickAccess-Konfiguration
-		(Spaltenanzahl usw.) und kann in die Favoriten augenommen werden. Damit ist die
-		Optik bei jedem Aufruf voreingestellt.</p>
-		<p>Aktualisierung erzwingen: Bei Aktivierung stellt QuickAccess sicher, daß die Seite
-		bei jedem Aufruf neu geladen wird, um den aktuellen Status anzuzeigen. Bei deaktivierter
+		(Spaltenanzahl usw.) und kann in die Favoriten augenommen werden. Damit ist die Optik bei
+		jedem Aufruf voreingestellt.</p>
+
+		<p>Aktualisierung erzwingen: Bei Aktivierung stellt QuickAccess sicher, daß die Seite bei
+		jedem Aufruf neu geladen wird, um den aktuellen Status anzuzeigen. Bei deaktivierter
 		Aktualisierung kann es vorkommen, daß der Browser die letzte Version aus dem Cache
 		anzeigt, statt die Seite von der CCU neu anzufordern.</p>
+
+		<p>PIN: Über diesen Button kann eine einfache PIN-Abfrage 
+		(<a href="javascript:jumpto('password.htm');">Kindersicherung</a>) eingestellt werden.</p>
 		
 		<h3>Bedienkonzept</h3>
 		<p>Eine Einführung in das Bedienkonzept finden Sie <a 
 		href="javascript:jumpto('buttons.htm');">hier</a>.</p>
+		
+		<h3>Installation als App</h3>
+		<p>QuickAccess kann als Favorit gespeichert oder als App auf dem Home Screen von Mobilgeräten abgelegt werden.</p>
+		
+		<p>Die Einstellungen der App (Button-Größe, Aktualisierung, Tablet-Ansicht usw.) werden in der URL gespeichert. Am sinnvollsten ist es daher, zunächst auf der Startseite die korrekten Einstellungen vorzunehmen:</p>
+		
+		<ul><li>"Buttons kleiner" und "Buttons größer" stellen die gewünschte Button-Größe ein</li>
+		<li>"Breite Darstellung" für übersichtlichere Darstellung auf Querformat-Bildschirmen aktivieren</li>
+		<li>"Aktualisierung erzwingen" wird bei manchen Browsern benötigt, die sonst bei der Rückkehr zu bereits aufgerufenen Seiten eine alte Version aus dem Cache wieder anzeigen</li>
+		<li>"App" aktivieren, damit QuickAccess vom Home Screen aus im Vollbild-Modus (ohne Navigationsleiste) ausgeführt wird</li>
+		<li>weil auch die Position auf der Seite in der URL gespeichert wird, zum Abschluss auf den Aufwärts-Pfeil in einer Überschrift klicken</li></ul>
+		
+		<p>Danach kann QuickAccess als Favorit gespeichert oder zum Home Screen hinzugefügt werden und startet in der gewählten Einstellung.</p>
 
 		<h3>Lizenz</h3>
-		<p>Copyright 2010-2014 by Yellow Teddybear Software</p>
+		<p>Copyright 2010-2015 by Yellow Teddybear Software</p>
 		<p>Kontakt: <a href="mailto:yellowteddybear@luetgens.org?subject=QuickAccess">yellowteddybear@luetgens.org</a></p>
 		
 		<p>Wenn Ihnen QuickAccess gefällt, können Sie spenden: paypal@luetgens.org!</p>
@@ -65,5 +89,6 @@
 		<p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="http://www.gnu.org/licenses/" target="_blank">http://www.gnu.org/licenses/</a>.</p>
 		
 
+		</div>
 	</body>
-</html>
+<html>

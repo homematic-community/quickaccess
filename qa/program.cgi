@@ -17,14 +17,26 @@ cgi_eval {
 
 
 		cgi_head {
-    		cgi_title "HomeMatic QuickAccess"
+    		cgi_title "Programm - HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 
 			set id ""
 			set action ""
@@ -78,7 +90,7 @@ cgi_eval {
 					! PROGRAMM AUSFÜHREN
 					
 					if (s_action == "run") {				
-						Write ('<h3>');
+						Write ('<div class="clear"></div><h3>');
 						WriteXML (o_object.Name());
 						WriteLine ('</h3>');
 						o_object.ProgramExecute();
@@ -87,11 +99,11 @@ cgi_eval {
 					
 						! MENÜ ANZEIGEN
 					
-						WriteLine ('<a href="javascript:jumpto(\'software.cgi?list=programs\');"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'software.cgi?list=programs\');"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 						if (s_sys_pin != "") {
-							WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="button">abmelden</div></a>');
+							WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="standard button">abmelden</div></a>');
 						}
-						WriteLine ('<a href="javascript:jumpto(\'help/program.htm\');"><div class="buttonhelp">Hilfe</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'help/program.htm\');"><div class="standard buttonhelp">Hilfe</div></a>');
 
 						s_directaccess = o_directaccess.Value();
 						if ((s_action == 'da_true') || (s_action == 'da_false')) {
@@ -103,22 +115,23 @@ cgi_eval {
 							}
 							if (s_action == 'da_true') {
 								s_directaccess_new = s_directaccess_new # o_object.ID() # ':';
-								WriteLine ('<span class="multi_2"><div>DirectAccess<br>eingerichtet</div></span>');
+								WriteLine ('<span class="multi_2"><div class="standard">DirectAccess<br>eingerichtet</div></span>');
 							} else {
-								WriteLine ('<span class="multi_2"><div>DirectAccess<br>entfernt</div></span>');
+								WriteLine ('<span class="multi_2"><div class="standard">DirectAccess<br>entfernt</div></span>');
 							}
 							o_directaccess.State (s_directaccess_new);
 							s_directaccess = s_directaccess_new;
 						}
 
-						Write ('<h3>');
+						Write ('<div class="clear"></div><h3>');
 						WriteXML (o_object.Name());
 						WriteLine ('</h3>');
-						WriteLine ('<a href="javascript:jumpto(\'program.cgi?id=' # o_object.ID() # '&action=run\');"><span class="multi_2"><div onclick="this.className=\'active\';" class="button">Programm<br>ausführen</div></span></a>');
+						WriteLine ('<script type="text/javascript">document.title = "' # o_object.Name() # ' - HomeMatic QuickAccess";</script>');						
+						WriteLine ('<a href="javascript:jumpto(\'program.cgi?id=' # o_object.ID() # '&action=run\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard button">Programm<br>ausführen</div></span></a>');
 
 						s_directaccess = o_directaccess.Value();
 						b_directaccess = (s_directaccess.Find (':' # o_object.ID() # ':') >= 0);
-						WriteLine ('<a href="javascript:jumpto(\'program.cgi?id=' # o_object.ID() # '&action=da_' # (!b_directaccess) # '\');"><div onclick="this.ClassName=\'active\';" class="button' # b_directaccess # '">DirectAccess</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'program.cgi?id=' # o_object.ID() # '&action=da_' # (!b_directaccess) # '\');"><div onclick="this.ClassName=\'standard active\';" class="standard button' # b_directaccess # '">DirectAccess</div></a>');
 					}
 					
 				}
@@ -127,7 +140,8 @@ cgi_eval {
 	
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010-2014 by Yellow Teddybear Software</p> }
+			puts { </div> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
 
 

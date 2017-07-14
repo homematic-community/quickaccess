@@ -3,21 +3,23 @@
 	
 		<title>QuickAccess-Hilfe</title>
 		<link href="../style.css" rel="stylesheet" type="text/css">
-		<meta name="viewport" content="width=320, initial-scale=1" />
+		<meta name="viewport" content="width=960, initial-zoom=1"  />
+		<meta name="format-detection" content="telephone=no" />
 	</head>
-	<body>
+	<body class="help">
+		<div class="helpbackground"></div>
 		<script src="../style.js" type="text/javascript"></script>
 		<h1>QuickAccess Hilfe</h1>
 		
-		<a href="javascript:jumpto('../index.cgi');"><div class="button">Startseite</div></a>
-		<a href="javascript:history.back();"><div class="button">zurück</div></a>
+		<a href="javascript:jumpto('../index.cgi');"><div class="standard button">Startseite</div></a>
+		<a href="javascript:history.back();"><div class="standard button">zurück</div></a>
 		
 		<h3>Bedienkonzept</h3>
 		<p>QuickAccess ist als Bedienoberfläche für Endgeräte mit kleinem Bildschirm und
 		Touch-Bedienung konzipiert. Die grundsätzliche Konfiguration der Geräte und Kanäle
 		erfolgt weiterhin über die herkömmliche WebUI.</p>
 		
-		<div class="active">Button</div>
+		<div class="standard active">Button</div>
 		
 		<p>Beim Anklicken von Buttons werden diese gelb hinterlegt, wenn eine Funktion
 		ausgeführt wird. Damit gibt es eine unmittelbare Rückmeldung, auch wenn der 
@@ -25,61 +27,62 @@
 		mobilen Internet).</p>
 		
 		<h3>Info-Buttons</h3>
-		<div>Information</div>
+		<div class="standard">Information</div>
 		<p>Info-Buttons zeigen Informationen an. Beispiel: Lufttemperatur oder Öffnungsgrad
 		von Stellantrieben. Sie sind nicht anklickbar.</p>
 		
 		<h3>Toggle-Buttons</h3>
-		<div onclick="this.className=\'active\';" class="buttonfalse">aus</div>
-		<div onclick="this.className=\'active\';" class="buttontrue">entriegelt</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttonfalse">aus</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttontrue">entriegelt</div>
 		<p>Toggle-Buttons zeigen den aktuellen Status eines Kanals an. Beispiel: 
 		Schaltaktoren können "an" oder "aus" sein. Bei Status "an" wird zusätzlich der
 		Button weiß dargestellt. Beim Anklicken wird der Status geändert.</p>
 		
 		<h3>Funktionsbuttons</h3>
-		<div onclick="this.className=\'active\';" class="button">Button</div>
+		<div onclick="this.className=\'standard active\';" class="standard button">Button</div>
 		<p>Funktionsbuttons lösen Funktionen aus, bei denen kein Status hinterlegt ist.
 		Beispiel: Die Buttons auf der Startseite verzweigen in Untermenüs, zeigen aber 
 		keinen Status (aktiv/inaktiv) an. Die Buttons sind anklickbar.</p>
 		
 		<h3>Multibuttons</h3>
-		<div onclick="this.className=\'active\';" class="buttonfalse">1</div>
-		<div onclick="this.className=\'active\';" class="buttontrue">2</div>
-		<div onclick="this.className=\'active\';" class="buttonfalse">3</div>
-		<div onclick="this.className=\'active\';" class="buttonfalse">4</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttonfalse">1</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttontrue">2</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttonfalse">3</div>
+		<div onclick="this.className=\'standard active\';" class="standard buttonfalse">4</div>
 		<p>Multibuttons zeigen den Status von Kanälen an, die mehrere Werte annehmen
 		können. Beispiel: Ein Dimmer kann zwischen "aus" und "an" auf verschiedene 
 		Helligkeiten eingestellt werden. Der aktuelle Wert wird weiß hinterlegt. Beim
 		Klick auf einen der Buttons wird der Wert geändert.</p>
 		
 		<h3>Hilfebuttons</h3>
-		<div class="buttonhelp">Hilfe</div>
+		<div class="standard buttonhelp">Hilfe</div>
 		<p>Der Hilfebutton führt zur Online-Hilfe der entsprechenden Seite. Hilfebuttons
 		sind anklickbar.</p>
 		
 		<h3>Fehlerbuttons</h3>
-		<span class="multi_2"><div onclick="this.className=\'active\';" class="errorfalse">kein<br>Fehler</div></span>
-		<div class="errortrue">Fehler</div>
+		<span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard errorfalse">kein<br>Fehler</div></span>
+		<div class="standard errortrue">Fehler</div>
 		<p>Wenn ein Fehler auftritt, wird dieser rot angezeigt. Beispiel: Fehler im 
 		Motorlauf von WinMatic oder KeyMatic. Fehlerbuttons sind nicht anklickbar, zur 
 		Behebung muß im Allgemeinen am jeweiligen Gerät manuell etwas getan werden.</p>
 		
 		<h3>Warn-Buttons</h3>
-		<span class="multi_2"><div onclick="this.className=\'active\';" class="warningfalse">keine<br>Warnung</div></span>
-		<div class="warningtrue">Warnung</div>
+		<span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard warningfalse">keine<br>Warnung</div></span>
+		<div class="standard warningtrue">Warnung</div>
 		<p>Wenn ein Problem vorliegt, das die Funktion des Gerätes einschränken kann,
 		wird dieses gelb angezeigt. Beispiel: "Batteriestand niedrig"-Warnungen für
 		batteriebetriebene Komponenten. Die Buttons sind nicht anklickbar, eine Aktion
 		direkt am Gerät ist erforderlich, die Funktionsfähigkeit ist aber noch gegeben.</p>
 		
 		<h3>Status-Buttons</h3>
-		<span class="multi_3"><div class="statusfalse">Funktion<br>nicht<br>ausgelöst</div></span>
-		<span class="multi_2"><div class="statustrue">Funktion<br>ausgelöst</div></span>
+		<span class="multi_3"><div class="standard statusfalse">Funktion<br>nicht<br>ausgelöst</div></span>
+		<span class="multi_2"><div class="standard statustrue">Funktion<br>ausgelöst</div></span>
 		<p>Eine Statusmeldung, die nicht klar als Fehler erkennbar ist, wird türkis
 		dargestellt. Beispiel: Die WinMatic meldet sowohl während des normalen Motorlaufs
 		"Zustand unbekannt" als auch bei manueller Betätigung des Drehgriffs. Der Button ist
 		nicht anklickbar, ein Eingriff direkt am Gerät hängt von der Ursache der Meldung
 		ab.</p>
 
+		</div>
 	</body>
-</html>
+<html>

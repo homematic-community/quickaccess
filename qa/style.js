@@ -1,35 +1,36 @@
-// Systemvariablen-Forumlar
-
-function update_directaccess (list, id, value) {
-	var directaccess = list.split (";", 10);
-	directaccess[id] = value;
-	return (directaccess.join(";"));
-}
+// Javascript-Funktionen für QuickAccess
+// (c) 2010-2015 Yellow Teddybear Software
 
 
-// URL-Parameter auslesen -- http://www.netlobo.com/url_query_string_javascript.html //
+// ===============
+// Grundfunktionen
+// ===============
+
 
 function gup (name, url) {
-  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  var regex = new RegExp( regexS );
-  var results = regex.exec(url);
-  if (results == null) {
-    return ("");
-  } else {
-    return (results[1]);
-  }
+	// URL-Parameter auslesen
+	// http://www.netlobo.com/url_query_string_javascript.html //
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var results = regex.exec(url);
+	if (results == null) {
+		return ("");
+	} else {
+		return (results[1]);
+	}
 }
 
 
-// irgendwo hinspringen
-
 function jumpto(url) {
+	// irgendwo hinspringen
+	// Parameter in neue URL übertragen
+	// Zähler hochsetzen
 	var appchar, param, p_link, p_href, i, anchor;
 	if (url.search(/\?/) == -1) {
 		appchar = "?";
 	} else {
-		 appchar = "&";
+		appchar = "&";
 	}
 	if (url.search (/#/) == -1) {
 		anchor = "";
@@ -37,7 +38,7 @@ function jumpto(url) {
 		anchor = url.replace (/.*#/, "");
 		url = url.replace (/#.*/, "");
 	}
-	var paramlist = ["cols", "anchor", "ianchor", "counter", "list", "pin"];
+	var paramlist = ["cols", "anchor", "ianchor", "counter", "list", "pin", "tablet", "app"];
 	for (i=0; i < paramlist.length; i++) {
 		param = paramlist[i];
 		p_link = gup (param, url);
@@ -53,13 +54,138 @@ function jumpto(url) {
 	if (anchor != "") {
 		url = url + "#" + anchor;
 	}
-//	document.write ('<pre>jump <a href="' + url + '">' + url + ' ...</a></pre>');
 	location.href=url;
 }
 
-// PARAMETER VERSTECKT IN FORMULAR ANZEIGEN //
+
+function jumptotop() {
+	// zu Seitenanfang springen
+	// <a href="#top"> funktioniert nicht bei App-Ansicht
+	window.location.href = '#top';
+}
+
+
+	
+function css (property, value, item) {
+	// CSS-Klasse und Parameter senden
+	document.write (item + '{' + property + ':' + value + ';}\r\n');
+}
+
+
+function cssp (property, value, item) {
+	// CSS-Klasse und Parameter mit "px" senden
+	css (property, value + 'px', item);
+}
+
+
+function cssi (property, value, item) {
+	// CSS-Klasse und Parameter mit !important senden
+	css (property, value + 'px !important', item);
+}
+
+
+// =================
+// Globale Variablen
+// =================
+
+	// Anker für Rücksprung mit zurück-Button
+	var js_ianchor = gup ("ianchor", window.location.href);
+	
+	// Anker für Rücksprung zu channels.cgi
+	// action.cgi
+	var js_anchor = gup ("anchor", window.location.href);
+
+
+// ========================
+// Buttons / Optionsbuttons
+// ========================
+
+
+function ColsSelection() {
+	// Buttons gröer / kleiner
+	// index.cgi
+	document.write ('<a href="javascript:jumpto(\'index.cgi?cols=' + (DisplayCols + 1) + '#1\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard buttonfalse">Buttons<br />kleiner</div></span></a>');
+	if (DisplayCols > 3) {
+		document.write ('<a href="javascript:jumpto(\'index.cgi?cols=' + (DisplayCols - 1) + '#1\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="standard buttonfalse">Buttons<br />größer</div></span></a>');
+	}
+}
+
+
+function TabletSelection() {
+	// Breite Darstellung
+	// index.cgi
+	var tablet = parseInt (gup ("tablet", window.location.href));
+	if (tablet != 1) {
+		tablet = 1;
+		var button = "standard buttonfalse";
+	} else {
+		tablet = 0;
+		var button = "standard buttontrue";
+	}
+	document.write ('<a href="javascript:jumpto(\'index.cgi?tablet=' + tablet + '#1\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="' + button + '">Breite<br />Darstellung</div></span></a>');
+}
+
+
+function UpdateSelection() {
+	// Aktualisierung erzwingen
+	// index.cgi
+	var counter = parseInt (gup ("counter", window.location.href));
+	if (counter > 0) {
+		counter = 0;
+		var button = "standard buttontrue";
+	} else {
+		counter = 1;
+		var button = "standard buttonfalse";
+	}
+	document.write ('<a href="javascript:jumpto(\'index.cgi?counter=' + counter + '#1\');"><span class="multi_2"><div onclick="this.className=\'standard active\';" class="' + button + '">Aktualisierg.<br>erzwingen</div></span></a>');
+}
+
+
+function AppSelection() {
+	// App - Button für App-Header senden
+	// index.cgi
+	var app = parseInt (gup ("app", window.location.href));
+	if (app != 1) {
+		app = 1;
+		var button = "standard buttonfalse";
+	} else {
+		app = 0;
+		var button = "standard buttontrue";
+	}
+	document.write ('<a href="javascript:jumpto(\'index.cgi?app=' + app + '#1\');"><div onclick="this.className=\'standard active\';" class="' + button + '">App</div></a>');
+}
+
+
+function WebUIButton() {
+	// Button für CCU-WebUI
+	// index.cgi
+	var pos, url;
+	pos = window.location.href.indexOf('addons');
+	if (pos >= 0) {
+		url = window.location.href.substr (0, pos);
+		document.write ('<a href="' + url + '" target="_blank"><span class="multi_2"><div class="standard buttonlink">CCU<br />WebUI</div></span></a>');
+	}
+}
+		
+
+// ==============
+// App-Funktionen
+// ==============
+
+
+function update_directaccess (list, id, value) {
+	// DirectAccess-String im Systemvariablen-Forumlar aktualisieren
+	// sysvar.cgi
+	var directaccess = list.split (";", 10);
+	directaccess[id] = value;
+	return (directaccess.join(";"));
+}
+
 
 function HiddenFormFields(paramlist) {
+	// Parameterliste versteckt im Formular anzeigen
+	// password.cgi
+	// sysvar.cgi
 	var param, i;
 	for (i=0; i<paramlist.length; i++) {
 		param = paramlist[i];
@@ -67,159 +193,191 @@ function HiddenFormFields(paramlist) {
 	}
 }
 
-// Spalten-Auswahl für Indexseite //
 
-function ColsSelection() {
-	var min = parseInt (DisplayCols / 2);
-	if (min < 3) {
-		min = 3;
+// ==========
+// Stylesheet
+// ==========
+
+document.write ('<style type=\"text/css\">');
+
+
+	// Browser bestimmen
+
+	var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;						// Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+	var isFirefox = typeof InstallTrigger !== 'undefined';											// Firefox 1.0+
+	var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;	// At least Safari 3+: "[object HTMLElementConstructor]"
+	var isChrome = !!window.chrome && !isOpera;              										// Chrome 1+
+	var isIE = /*@cc_on!@*/false || !!document.documentMode;										// At least IE6
+
+
+	// Parameter für Größenberechnung //
+
+	var DisplayCols = gup ("cols",window.location.href);
+	if (DisplayCols == "") {
+		DisplayCols = 4;
+	} else {
+	  DisplayCols = parseInt (DisplayCols);
 	}
-	var a = 0;
-	for (var shown = 1; shown <= DisplayCols; a = a + 1) {
-		if (min + a != DisplayCols) {
-			document.write ('<a href="javascript:jumpto(\'index.cgi?cols=' + (min + a) + '#1\');"><div onclick="this.className=\'active\';" class="buttonfalse">' + (min + a) + ' Spalten</div></a>');
-			shown = shown + 1;
+	winW = 920;
+	var CellSize = parseInt (winW / DisplayCols);
+
+	
+	// Grundwerte
+
+		css ('margin',				0,							'p, pre, ul, li');
+		css ('padding',				0,							'p, pre, ul, li');
+	
+
+	// Abstände //
+
+	var Margin = parseInt (CellSize / 10);
+		cssp ('margin-top', 		Margin,						'p.footer, table.inline');
+		cssp ('margin-bottom', 		Margin,						'div.standard, table.inline');
+		cssp ('margin-left', 		Margin,						'p, pre, div.toparrow, table.inline');
+		cssp ('margin-right', 		Margin,						'p, pre, div.standard, table.inline, table.tablet h3');
+		cssp ('padding-top',		Margin,						'h1, h3, table.inline td, table.inline th, table.tablet th, table.tablet td');
+		cssp ('padding-bottom',		Margin,						'h1, h3, table.inline td, table.inline th');
+		cssp ('padding-left',		Margin,						'h1, h3, table.inline td, table.inline th');
+		cssp ('padding-right',		Margin,						'h1, h3, table.inline td, table.inline th, table.tablet th, table.tablet td');
+
+	var ListMargin = Margin * 4;
+		cssp ('margin-left',		ListMargin,					'ul');
+		
+	var Border = parseInt (CellSize / 40);
+		cssp ('border-width',		Border,						'div.standard, div.inputfield, div.smallinputfield, div.inputbutton, div.inputlabel, div.activeinput');
+
+	var TabletDivider = parseInt (CellSize / 7);
+		cssp ('padding-bottom',		TabletDivider,				'table.tablet th, table.tablet td');
+		cssp ('margin-top',			TabletDivider,				'table.tablet');
+
+		
+	// Schriftgrößen / Zeilenabstände
+		
+	var LineHeight = parseInt (CellSize / 6);
+		cssp ('line-height',		LineHeight,					'div.standard');
+		
+	var HelpLineHeight = parseInt (CellSize / 3.5);
+		cssp ('line-height',		HelpLineHeight,				'body.help p, body.help li');
+
+	var ParagraphPadding = parseInt (CellSize / 10);
+		cssp ('padding-top',		ParagraphPadding,			'p, pre, li');
+		cssp ('padding-bottom',		ParagraphPadding,			'p, pre, ul');
+		
+	var FontSize = parseInt (CellSize / 7);
+		cssp ('font-size',			FontSize,					'p.footer, pre, div.standard, table.inline td, table.inline th, input.inputfield, ' +
+																'input.smallinputfield');
+
+	var MediumFontSize = parseInt (CellSize / 5);
+		cssp ('font-size',			MediumFontSize,				'p, table.tablet h3');
+
+	var HelpFontSize = parseInt (CellSize / 4.5);
+		cssp ('font-size',			HelpFontSize,				'body.help p, body.help li');
+
+	var BigFontSize = parseInt (CellSize / 4);
+		cssp ('font-size',			BigFontSize,				'h3');
+		cssp ('height',				BigFontSize,				'div.toparrow');
+		cssp ('width',				BigFontSize,				'div.toparrow');
+		
+	var HugeFontSize = parseInt (CellSize / 2.5);
+		cssp ('font-size',			HugeFontSize,				'h1');
+
+		
+	// Objektbreite //
+		
+	var BoxWidth = CellSize - Margin - Border * 2;
+		cssp ('width',				BoxWidth,					'div.standard, div.inputbutton, div.inputlabel, div.activeinput');
+
+	var BoxWidthNB = BoxWidth + Border * 2;
+		cssp ('width',				BoxWidthNB,					'div.button, div.buttonfalse, div.buttontrue, div.buttonhelp, div.buttonlink');
+
+	var InputFieldWidth = CellSize * 3 - Border * 2 - Margin;
+		cssp ('width',				InputFieldWidth,			'div.inputfield');
+
+	var SmallInputFieldWidth = parseInt (CellSize * 1.5 - Border * 2 - Margin);
+		cssp ('width',				SmallInputFieldWidth,		'div.smallinputfield');
+
+	var InputFieldHPadding = parseInt (CellSize / 10);
+		cssp ('padding-left',		InputFieldHPadding,			'input.inputfield, input.smallinputfield');
+	
+	var InputWidth = InputFieldWidth - (Border + InputFieldHPadding) * 2;
+		cssp ('width',				InputWidth,					'input.inputfield');
+
+	var SmallInputWidth = SmallInputFieldWidth - (Border + InputFieldHPadding) * 2;
+		cssp ('width',				SmallInputWidth,			'input.smallinputfield');
+		
+		
+	// Objekthöhe / Innenabstand oben //
+		
+	var BoxHeight, BoxHeightNB, BoxPadding, BoxPaddingNB;
+	for (x = 1; x <= 4; x = x + 1) {
+		BoxHeightNB = BoxWidthNB;
+		BoxPaddingNB = parseInt ((BoxHeightNB - (LineHeight * x)) / 2);
+		if (isChrome) {
+			BoxPaddingNB++;
+		}
+		BoxHeightNB = BoxHeightNB - BoxPaddingNB;
+		BoxHeight = BoxHeightNB - Border;
+		BoxPadding = BoxPaddingNB - Border;
+
+		if (x == 1) {
+			cssp ('height', 		BoxHeight, 					'div.standard');
+			cssp ('padding-top', 	BoxPadding, 				'div.standard');
+			cssp ('padding-top', 	BoxPaddingNB,				'div.button, div.buttonfalse, div.buttontrue, div.buttonhelp, div.buttonlink');
+			cssp ('height', 		BoxHeightNB, 				'div.button, div.buttonfalse, div.buttontrue, div.buttonhelp, div.buttonlink');
+		}
+		cssp ('height', 			BoxHeight, 					'span.multi_' + x + ' div.standard');
+		cssp ('padding-top', 		BoxPadding, 				'span.multi_' + x + ' div.standard');
+		cssp ('padding-top', 		BoxPaddingNB,				'span.multi_' + x + ' div.button, span.multi_' + x + ' div.buttonfalse, ' +
+																'span.multi_' + x + ' div.buttonlink, span.multi_' + x + ' div.buttontrue');
+		cssp ('height', 			BoxHeightNB, 				'span.multi_' + x + ' div.button, span.multi_' + x + ' div.buttonfalse, ' +
+																'span.multi_' + x + ' div.buttonlink, span.multi_' + x + ' div.buttontrue');
+
+		if (x == 4) {
+			cssp ('margin-left', 	BoxPadding, 				'span.left');
+			cssp ('margin-right', 	BoxPadding, 				'span.right');
 		}
 	}
-}
 
-
-// Aktualisierung erzwingen für Indexseite
-
-function UpdateSelection() {
-	var counter = parseInt (gup ("counter", window.location.href));
-	if (counter > 0) {
-		var counter = 0;
-		var button = "buttontrue";
-	} else {
-		var counter = 1;
-		var button = "buttonfalse";
-	}
-	document.write ('<a href="javascript:jumpto(\'index.cgi?counter=' + counter + '#1\');"><span class="multi_2"><div onclick="this.className=\'active\';" class="' + button + '">Aktualisierg.<br>erzwingen</div></span></a>');
-}
-
-
-
-// Fenstergröße bestimmen //
-
-if (navigator.userAgent.search ("Mozilla.*Android.*3[2-9]\.0") >= 0) {
-	// Android Firefox mit kaputtem viewport
-	winW = 320;
-	browser = 0;
-} else if (typeof window.innerWidth != "undefined") {  
-    // Mozilla //
-    var winW = window.innerWidth - 20 - 20;  // Mozilla rechnet den Scrollbalken mit ...
-    var browser = 1;
-} else if (typeof document.documentElement != "undefined" && typeof document.documentElement.clientWidth != "undefined" && document.documentElement.clientWidth != 0) {  
-	// HD Mini?
-    var winW = document.documentElement.clientWidth - 25;
-    var browser = 2;
-} else {  
-    // IE //
-    var winW = document.getElementsByTagName("body")[0].clientWidth - 20;
-    var browser = 3;
-}  
-
-// document.write ('Browser: ' + browser + ' (' + winW + 'px) ' + navigator.userAgent + '<br />');
-
-// Spalten berechnen //
-
-var DisplayCols = gup ("cols",window.location.href);
-if (DisplayCols == "") {
-	DisplayCols = 4;
-} else {
-  DisplayCols = parseInt (DisplayCols);
-}
-
-
-// Größen berechnen //
-
-var CellSize = parseInt (winW / DisplayCols);
-
-var ImgSize = parseInt (CellSize / 1.5);
-
-var Margin = parseInt (CellSize / 10);
-var Border = parseInt (CellSize / 25);
-
-var LineHeight = parseInt (CellSize / 6);
-var SmallFontSize = parseInt (CellSize / 10);
-var FontSize = parseInt (CellSize / 7);
-var BigFontSize = parseInt (CellSize / 4);
-var HugeFontSize = parseInt (CellSize / 2.5);
-
-var BoxPadding = [];
-var BoxHeight = [];
-
-if (browser == 3) {  
-	// IE gibt Außenmaße an, Padding am Innenrahmen
-	var BoxWidth = CellSize - Margin;
-	var InputFieldWidth = CellSize * 3 - Margin;
-	var SmallInputFieldWidth = parseInt (CellSize * 1.5 - Margin);
 	var InputHeight = LineHeight + Border;
-	var InputFieldHeight = parseInt ((CellSize / 2) - Margin);
-	var InputFieldPadding = parseInt ((InputFieldHeight - InputHeight) / 2 - Border);
-	var InputWidth = InputFieldWidth - (InputFieldPadding + Border) * 2;
-	var SmallInputWidth = SmallInputFieldWidth - (InputFieldPadding + Border) * 2;
-	var InputButtonHeight = InputFieldHeight;
-	var InputButtonPadding = parseInt ((InputButtonHeight - LineHeight) / 2 - Border);
-	for (x = 1; x <= 4; x = x + 1) {
-		BoxHeight[x] = CellSize - Margin;
-		BoxPadding[x] = parseInt ((BoxHeight[x] - (LineHeight * x)) / 2 - Border);
-	}
-} else { 
-	// Mozilla gibt Innenmaße an, Padding wird zur Boxgröße addiert, Input-Padding von unten (wie krank ist das denn bitte)
-	var BoxWidth = CellSize - Border * 2 - Margin;
-	var InputFieldWidth = CellSize * 3 - Border * 2 - Margin;
-	var SmallInputFieldWidth = parseInt (CellSize * 1.5 - Border * 2 - Margin);
-	var InputHeight = LineHeight + Border;
+		cssp ('height',				InputHeight,				'input.inputfield, input.smallinputfield');
+
 	var InputFieldHeight = parseInt ((CellSize / 2) - Border * 2 - Margin);
 	var InputFieldPadding = parseInt ((InputFieldHeight - InputHeight) / 2);
 	InputFieldHeight = InputFieldHeight - InputFieldPadding;
+		cssp ('padding-top',		InputFieldPadding,			'div.inputfield, div.smallinputfield');
+		cssp ('height',				InputFieldHeight,			'div.inputfield, div.smallinputfield');
+
 	var InputButtonHeight = parseInt ((CellSize / 2) - Border * 2 - Margin);
 	var InputButtonPadding = parseInt ((InputButtonHeight - LineHeight) / 2);
 	InputButtonHeight = InputButtonHeight - InputButtonPadding;
-	var InputWidth = InputFieldWidth - (InputFieldPadding + Border) * 2;
-	var SmallInputWidth = SmallInputFieldWidth - (InputFieldPadding + Border) * 2;
-	for (x = 1; x <= 4; x = x + 1) {
-  		BoxHeight[x] = CellSize - Border * 2 - Margin;
-		BoxPadding[x] = parseInt ((BoxHeight[x] - (LineHeight * x)) / 2);
-		BoxHeight[x] = BoxHeight[x] - BoxPadding[x];
-	}
-}
+		cssp ('padding-top',		InputButtonPadding,			'div.inputbutton, div.inputlabel, div.activeinput');
+		cssp ('height',				InputButtonHeight,			'div.inputbutton, div.inputlabel, div.activeinput');
+
+	var TitlePadding = parseInt (CellSize / 8);
+		cssp ('margin-top', 		TitlePadding,				'h1');
+		cssp ('margin-bottom',		TitlePadding,				'h1, h3');
+
+	var TitlePaddingTop = parseInt (CellSize / 4);
+		cssp ('margin-top',			TitlePaddingTop,			'h3');
+
+		
+	// Bildgröße //
+		
+	var ImgSize = parseInt (CellSize / 2);
+		cssp ('width', 				ImgSize, 					'img.titleimage');
+		cssp ('height', 			ImgSize, 					'img.titleimage');
+
+	
+	// Rundungen
+	var BorderRadius = parseInt (CellSize / 10);
+		cssp ('border-radius',		BorderRadius,				'h1, h3, div.standard');
+		
+		
+	// Spezialwerte wieder überschreiben
+		css ('width',				'auto',						'div.nosize');
+		css ('height',				'auto',						'div.nosize');
+		css ('padding',				0,							'div.nosize, table.blind, table.blind td');
+		css ('margin',				0,							'table.blind, table.blind td');
 
 
-var TitlePadding = parseInt (CellSize / 10);
-var TitlePaddingTop = parseInt (CellSize / 4);
-var ParagraphPadding = parseInt (CellSize / 12);
-var MainTitleWidth = parseInt (winW - ImgSize - (CellSize / 10));
-
-// Formate definieren
-
-document.write ('<style type=\"text/css\">');
-document.write ('div { border-width:' + Border + 'px; font-size:' + FontSize + 'px; line-height:' + LineHeight + 'px; width:' + BoxWidth + 'px; height:' + BoxHeight[1] + 'px; Margin:0 ' + Margin + 'px ' + Margin + 'px 0; padding:' + BoxPadding[1] + 'px 0 0 0; }');
-for (x = 1; x <= 4; x = x + 1) {
- 	document.write ('span.multi_' + x + ' div { height:' + BoxHeight[x] + 'px; padding:' + BoxPadding[x] + 'px 0 0 0; }');
-}
-document.write ('td,th { font-size:' + FontSize + 'px; padding:' + Margin + 'px; } ');
-document.write ('th { border-right:' + Margin + 'px solid black; }');
-document.write ('h1 { width:' + winW + 'px; font-size:' + HugeFontSize + 'px; font-weight:bold; margin:0; padding:' + TitlePadding + 'px 0; }');
-document.write ('h1.maintitle { width:' + MainTitleWidth + 'px; }');
-document.write ('img.titleimage { width:' + ImgSize + 'px; height:' + ImgSize + 'px; float:left; }');
-document.write ('h3 { width:' + winW + 'px; font-size:' + BigFontSize + 'px; font-weight:bold; margin:0; padding:' + TitlePaddingTop + 'px 0 ' + TitlePadding + 'px 0; }');
-document.write ('h5 { width:' + winW + 'px; font-size:' + FontSize + 'px; font-weight:bold; margin:0; padding:' + TitlePaddingTop + 'px 0 ' + TitlePadding + 'px 0; }');
-document.write ('p, pre { width:' + winW + 'px; font-size:' + FontSize + 'px; font-weight:normal; margin:0; padding:' + ParagraphPadding + 'px 0; }');
-document.write ('p.footer { font-size:' + SmallFontSize + 'px; }');
-document.write ('input.inputfield { width:' + InputWidth + 'px; height:' + InputHeight + 'px; font-size:' + FontSize + 'px; }');
-document.write ('input.smallinputfield { width:' + SmallInputWidth + 'px; height:' + InputHeight + 'px; font-size:' + FontSize + 'px; }');
-document.write ('div.inputfield { width:' + InputFieldWidth + 'px; height:' + InputFieldHeight + 'px; border-width:' + Border + 'px; padding-top:' + InputFieldPadding + 'px; }');
-document.write ('div.smallinputfield { width:' + SmallInputFieldWidth + 'px; height:' + InputFieldHeight + 'px; border-width:' + Border + 'px; padding-top:' + InputFieldPadding + 'px; }');
-document.write ('div.inputbutton, div.inputlabel, div.activeinput { width:' + BoxWidth + 'px; height:' + InputButtonHeight + 'px; border-width:' + Border + 'px; padding-top:' + InputButtonPadding + 'px; }');
-document.write ('span.left { margin-left:' + BoxPadding[4] + 'px; }');
-document.write ('span.right { margin-right:' + BoxPadding[4] + 'px; }');
 document.write ('</style>');
-
-// sonst. Parameter
-
-var js_ianchor = gup ("ianchor", window.location.href);
-var js_anchor = gup ("anchor", window.location.href);
-

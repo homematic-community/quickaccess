@@ -18,22 +18,37 @@ cgi_eval {
 		cgi_head {
     		cgi_title "HomeMatic QuickAccess"
 			puts { <link href="style.css" rel="stylesheet" type="text/css"> }
-			puts { <meta name="viewport" content="width=device-width, initial-zoom=1" /> }
+			puts { <meta name="viewport" content="width=960, initial-zoom=1" /> }
+			puts { <meta name="format-detection" content="telephone=no" /> }
+			puts { <link rel="apple-touch-icon" href="favicons/icon.png" /> }
+			puts { <link rel="icon" href="favicons/icon.png" /> }
+			puts { <link rel="shortcut icon" href="favicons/favicon.ico" /> }
+			if { ![catch { import app }] } {
+				if { $app == "1" } {
+					puts { <meta name="mobile-web-app-capable" content="yes" /> }
+					puts { <meta name="apple-mobile-web-app-capable" content="yes" /> }
+ 				}
+			}
+
 		}
 
 		cgi_body {
 
 			puts { <script src="style.js" type="text/javascript"></script> }
+			puts { <div class="background"></div><div class="page"> }
 
 			set list ""
 			catch { import list }
 			set pin ""
 			catch { import pin }
+			set tablet ""
+			catch { import tablet }
 	
 			array set res [rega_script {
 
 				! PARAMETER
 				string s_list = "} $list {";
+				boolean tablet = ("} $tablet {"=="1");
 
 				string s_sys_pin = "";
 				object o_sys_pin = dom.GetObject ("QuickAccess PIN");
@@ -47,19 +62,21 @@ cgi_eval {
 
 					if (s_list == 'programs') {
 						WriteLine ('<h1>Programme</h1>');
+						WriteLine ('<script type="text/javascript">document.title = "Programme - HomeMatic QuickAccess";</script>');
 						s_list = ID_PROGRAMS;
 					}
 					if (s_list == 'sysvar') {
 						WriteLine ('<h1>Systemvariable</h1>');
+						WriteLine ('<script type="text/javascript">document.title = "Systemvariable - HomeMatic QuickAccess";</script>');
 						s_list = ID_SYSTEM_VARIABLES;
 					}
 						
-					WriteLine ('<a href="javascript:jumpto(\'index.cgi#0\');"><div onclick="this.className=\'active\';" class="button">zurück</div></a>');
+					WriteLine ('<a href="javascript:jumpto(\'index.cgi#0\');"><div onclick="this.className=\'standard active\';" class="standard button">zurück</div></a>');
 					if (s_sys_pin != "") {
-						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="button">abmelden</div></a>');
+						WriteLine ('<a href="javascript:jumpto(\'password.cgi?pin=logout\');"><div class="standard button">abmelden</div></a>');
 					}
-					WriteLine ('<a href="javascript:jumpto(\'help/software.htm\');"><div class="buttonhelp">Hilfe</div></a>');
-					WriteLine ('<h3></h3>');
+					WriteLine ('<a href="javascript:jumpto(\'help/software.htm\');"><div class="standard buttonhelp">Hilfe</div></a>');
+					WriteLine ('<div class="clear"></div>');
 
 					object o_object;
 					string s_object_id;
@@ -71,9 +88,28 @@ cgi_eval {
 					integer i_pointer;
 					integer i_subpointer;
 					integer i_count;
-		
+					string s_initial = '';
+					boolean b_first = true;
+
+					if (tablet) { WriteLine ('<table class="tablet">'); }
+				
 					foreach (s_object_id, dom.GetObject(s_list).EnumUsedIDs()) {
 						o_object = dom.GetObject (s_object_id);
+
+						if (o_object.Name().Substr(0,1) != s_initial) {
+							if (tablet) { 
+								if (!b_first) {
+									WriteLine ('</td></tr>');
+								} else {
+									b_first = false;
+								}
+								WriteLine ('<tr><th>'); 
+							}
+							s_initial = o_object.Name().Substr(0,1);
+							WriteLine ('<div class="clear"></div><h3 style="text-align:center;">' # s_initial # '</h3>');
+							if (tablet) { WriteLine ('</th><td>'); }
+						}
+						
 						if (s_list == ID_PROGRAMS) {
 							Write('<a href="javascript:jumpto(\'program.cgi?id=' # o_object.ID() # '\');">');
 						} else {
@@ -130,13 +166,13 @@ cgi_eval {
 							if (s_value.Length() > 10) {
 								s_value = s_value.Substr (0,8) # '...';
 							}
-							Write ('<span class="multi_4"><div onclick="this.className=\'active\';" class="button">');
+							Write ('<span class="multi_4"><div onclick="this.className=\'standard active\';" class="standard button">');
 						} else {
 							if (i_count > 4) {
 								i_count = 4;
 							}
 							s_value = "";
-							Write ('<span class="multi_' # i_count # '"><div onclick="this.className=\'active\';" class="button">');
+							Write ('<span class="multi_' # i_count # '"><div onclick="this.className=\'standard active\';" class="standard button">');
 						}
 
 						i_pointer = 0;
@@ -156,13 +192,22 @@ cgi_eval {
 						WriteLine ('</div></span></a>');
 					}
 
+					if (tablet) { 
+						if (!b_first) {
+							WriteLine ('</td></tr>');
+						}
+						WriteLine ('</table>'); 
+					}
+					
+					
 				}
 					
 			}]
 
 			puts -nonewline $res(STDOUT)
 			
-			puts { <p class="footer">QuickAccess (c) 2010-2014 by Yellow Teddybear Software</p> }
+			puts { </div> }
+			puts { <p class="footer">QuickAccess (c) 2010-2015 by Yellow Teddybear Software</p> }
 
 
 		}
