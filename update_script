@@ -43,6 +43,8 @@ elif [ "$1" = "CCU2" ]; then
         # CCU2 always reboots after Addon/Firmware Update
 elif [ "$1" = "HM-RASPBERRYMATIC" ]; then
         echo "HM-RASPBERRYMATIC"
-        umount /usr/local
         # RASPBERRYMATIC always reboots after Addon/Firmware Update
 fi
+
+# signal success without requiring a reboot
+exit 0
